@@ -122,3 +122,43 @@
 
 - OPEN-01 ~ 16 사용자 승인 대기
 - 규칙→테스트 역추적표는 ID 존재 여부만 기계적으로 확인했고, 범위 표기(`01 ~ 08`)의 개별 항목까지는 확인하지 않음
+
+---
+
+## [2026-10-12] Phase 2 / EXP-001 — 실험 범위 확정 및 최초 비즈니스 코드 구현
+
+- 수행 주체: AI(Claude Opus 5.5, Claude Code CLI) — 사용자 지시에 따라 수행
+- 목적: A(Claude 단독)·B(Jev 점수 참고) 테스트 방식 비교의 대상이 될 최소 비즈니스 코드 작성. 테스트, Jev, JaCoCo, PIT는 수행하지 않음.
+
+### 1. 확인
+- `git status`: 작업 트리 깨끗함. Phase 1 문서는 커밋 `2c2b312`에 있음
+- `docs/` 확인: BUSINESS_RULES, DOMAIN_MODEL, TEST_CASE_MATRIX, DECISIONS, OPEN_QUESTIONS 존재
+
+### 2. 사용자 질의
+- 질문: 주입한 Clock의 역할 (BR-STL-002가 포함 목록에 없었음)
+- 응답: "M 지정 + 마감 검증 (Recommended)" → BR-STL-002 포함
+- 원문: `experiments/EXP-001-grade-fee-baseline/prompt.md` Turn 2
+
+### 3. 실행 명령어와 결과
+
+| 명령어 | 결과 |
+|--------|------|
+| `git commit` (prompt.md, README.md) | `7856f7a exp(001): prompt` |
+| `./gradlew clean compileJava` | `BUILD SUCCESSFUL in 1s` — **첫 컴파일 성공, 수정 없음** |
+| `diff -r src/.../billing experiments/.../ai-original/...` | 차이 없음 (원본 복사 확인) |
+| `./gradlew build` | `BUILD SUCCESSFUL`, `:test NO-SOURCE` |
+| `git commit` (구현 4개 파일 + ai-original 복사본) | `60424d5 exp(001): ai-original` |
+| `git tag -a exp-001-ai-original` | 생성 |
+
+### 4. 산출물
+- `src/main/java/com/testability/lab/billing/`: `Grade.java`, `Payment.java`, `FeeResult.java`, `FeeCalculator.java`
+- `docs/EXPERIMENT_SCOPE.md`: 목적, 포함/제외 Rule ID, 잠정 정책(임시 전제), 대상 클래스·메서드, 적용 가능 TC
+- `experiments/EXP-001-grade-fee-baseline/`: prompt.md, README.md, ai-original/, result.md
+
+### 5. 수정 이력
+- 없음. 최초 구현을 그대로 보존
+
+### 6. 남은 질문/TODO
+- OPEN-01, 03, 04, 15는 이번 실험의 임시 전제로만 사용. 승인 상태는 그대로 "승인 대기"
+- 이번 Phase의 Clock 역할 결정은 `DECISIONS.md`에 추가하지 않았다 (Phase 1 문서 수정 금지 지시). EXPERIMENT_SCOPE §5와 이 로그에만 기록
+- Jev가 무엇이고 어떻게 실행하는지는 아직 확인하지 않음 → 방식 B Phase 전에 필요
