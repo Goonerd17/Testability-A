@@ -19,9 +19,11 @@ AI가 생성한 비즈니스 코드의 **테스터빌리티(Testability)** 를 �
 - 정산 단위: 월별
 - 제공 형태: REST API
 
-### 2.2 미확정 사항 (TODO — 추측하지 않고 질문으로 남김)
+### 2.2 미확정 사항 (Phase 0 시점 질문)
 
-아래 항목은 업무 명세가 정해지기 전까지 코드로 구현하지 않는다. Phase 1(명세 확정)에서 답을 받는다.
+> **Phase 1 갱신 (2026-10-12)**: 아래 질문은 [BUSINESS_RULES.md](BUSINESS_RULES.md)에서 규칙으로 정리되었다.
+> Q1·Q2 → BR-GRD-001 (사용자 제공) · Q3 → BR-PRF-002 (사용자 제공) · Q4 → BR-GRD-002 · Q5 → BR-RFD-002, 008, 009 · Q6 → BR-AMT-001, BR-FEE-002 · Q7 → BR-PRF-004, BR-GRD-004 · Q8 → DOMAIN_MODEL §7 · Q9 → BR-STL-004 ~ 007 · Q10 → BR-TIM-001.
+> 사용자가 직접 정하지 않은 항목은 잠정 결정이며 [OPEN_QUESTIONS.md](OPEN_QUESTIONS.md)에서 승인을 기다린다.
 
 | # | 질문 | 비고 |
 |---|------|------|
@@ -69,6 +71,10 @@ AI가 생성한 비즈니스 코드의 **테스터빌리티(Testability)** 를 �
 │   └── _TEMPLATE/
 └── docs/
     ├── PROJECT_OVERVIEW.md      # (이 문서) 목적, 범위, 미확정 사항
+    ├── BUSINESS_RULES.md        # 업무 규칙 (Rule ID 부여) — 구현·테스트의 기준
+    ├── DOMAIN_MODEL.md          # 개념 모델, 불변식, 포트, API 초안
+    ├── TEST_CASE_MATRIX.md      # 경계값 분석, 테스트 시나리오와 기대값
+    ├── OPEN_QUESTIONS.md        # 잠정 결정(승인 대기)과 규칙 간 충돌
     ├── EXPERIMENT_PROTOCOL.md   # 실험 절차와 보존 규칙
     ├── AI_EXPERIMENT_LOG.md     # 실행한 명령어·결과·실패·수정 이력
     ├── TEST_RESULTS.md          # 실제 측정한 테스트/품질 지표
@@ -93,4 +99,5 @@ AI가 생성한 비즈니스 코드의 **테스터빌리티(Testability)** 를 �
 | Phase | 내용 | 상태 |
 |-------|------|------|
 | 0 | 개발 환경 확인, 프로젝트 골격, 문서 체계 | 완료 (2026-10-12) |
-| 1 이후 | 미정 — 다음 Phase 준비사항은 [AI_EXPERIMENT_LOG.md](AI_EXPERIMENT_LOG.md) 참고 | 대기 |
+| 1 | 비즈니스 명세, 도메인 모델, 테스트 케이스 매트릭스 | 문서 작성 완료, 잠정 결정 승인 대기 (2026-10-12) |
+| 2 이후 | 미정 — 다음 Phase 준비사항은 [AI_EXPERIMENT_LOG.md](AI_EXPERIMENT_LOG.md) 참고 | 대기 |

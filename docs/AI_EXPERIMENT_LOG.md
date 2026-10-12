@@ -81,3 +81,44 @@
 - Docker Desktop 미실행 → Testcontainers 사용 전 실행 필요
 - k6 미설치 → 성능 측정 Phase 전 설치 필요
 - 이번 Phase 산출물은 아직 커밋하지 않음 (사용자 확인 후 커밋)
+
+---
+
+## [2026-10-12] Phase 1 — 비즈니스 명세 작성
+
+- 수행 주체: AI(Claude Opus 5.5, Claude Code CLI) — 사용자 지시에 따라 수행
+- 목적: 구현 전에 업무 규칙, 도메인 모델, 테스트 기대값을 확정한다. 코드는 작성하지 않음.
+- 입력: 사용자가 제시한 등급 정책(BASIC/SILVER/GOLD/VIP 구간·요율)과 필수 업무 규칙 12개
+
+### 1. 산출물
+
+| 파일 | 내용 |
+|------|------|
+| `docs/BUSINESS_RULES.md` (신규) | Rule ID 50개 (TIM 4, AMT 3, TXN 7, RFD 10, PRF 5, GRD 4, FEE 5, STL 12), 오류 코드, 요구사항 추적표 |
+| `docs/DOMAIN_MODEL.md` (신규) | 값 객체, 엔티티, 불변식, 계산 흐름, 포트(Fake 대상), 영속화 제약, API 초안 |
+| `docs/TEST_CASE_MATRIX.md` (신규) | 경계값 분석 6개 영역, 테스트 케이스 97개 (GRD 9, PRD 10, RFD 16, FEE 17, AMT 8, DUP 8, TIM 7, STL 11, NEG 4, CON 7), 규칙→테스트 역추적표 |
+| `docs/OPEN_QUESTIONS.md` (신규) | 잠정 결정 16개(OPEN-01~16), 규칙 간 충돌 9개(C-01~09) |
+| `docs/PROJECT_OVERVIEW.md` (수정) | Phase 0 질문 Q1~Q10과 규칙 연결, 문서 목록, Phase 현황 |
+| `docs/DECISIONS.md` (수정) | D-009 ~ D-011 추가 |
+
+위 개수는 다음 명령으로 센 값이다.
+`grep -oE '^\| BR-[A-Z]+-[0-9]{3}' BUSINESS_RULES.md | sort -u | wc -l` → 50
+`grep -oE '^\| TC-[A-Z]+-[0-9]+' TEST_CASE_MATRIX.md | sort -u | wc -l` → 97
+
+### 2. 명시적으로 정한 핵심 정책 (지시: 모호하게 두지 말 것)
+
+- 환불의 과거 등급 영향: 확정 등급은 불변. 환불은 `refundedAt` 기준으로 인식되어 이후 정산월 등급에만 반영 (BR-RFD-008, 009)
+- 음수 순사용금액: 정상 경로에서 불가능한 불변식. 발생 시 `NEGATIVE_NET_USAGE` 오류, 0 보정·상계 금지 (BR-PRF-005)
+- 수수료 반올림: bp 정수 계산, 원 단위 HALF_UP, 월 합계에 1회 (BR-FEE-002, 003)
+- 정산 재실행: 즉시 확정, 재요청은 최초 결과 반환, 수정·재계산 없음, 정산 후 환불은 반영·환급 없음 (BR-STL-004 ~ 007)
+
+### 3. 검증
+
+- 문서 간 참조 검사: 매트릭스·도메인 모델·OPEN 문서가 참조한 Rule ID가 모두 `BUSINESS_RULES.md`에 정의되어 있음을 셸 스크립트로 확인. 모든 Rule ID가 역추적표에 1행 이상 존재함을 확인.
+- 테스트 기대값은 손 계산값이다. 코드로 검증하지 않았다(코드 없음).
+- 빌드/테스트 실행: 해당 없음 (문서만 변경)
+
+### 4. 남은 질문/TODO
+
+- OPEN-01 ~ 16 사용자 승인 대기
+- 규칙→테스트 역추적표는 ID 존재 여부만 기계적으로 확인했고, 범위 표기(`01 ~ 08`)의 개별 항목까지는 확인하지 않음
