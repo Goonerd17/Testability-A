@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="정수 범위 (TC-AMT-08)" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-10-12T13:55:06.517Z" hostname="DESKTOP-V649BGN" time="0.003">
+  <properties/>
+  <testcase name="TC-AMT-08: 등급 실적이 int 최댓값과 최댓값+1이어도 정확히 합산" classname="com.testability.lab.billing.FeeCalculatorTest$AmountRangeCases" time="0.003"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

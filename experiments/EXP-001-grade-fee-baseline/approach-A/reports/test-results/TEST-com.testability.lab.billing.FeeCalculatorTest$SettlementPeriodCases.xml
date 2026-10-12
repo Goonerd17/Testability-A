@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="정산월 마감 (TC-STL-04, 05)" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-12T13:55:06.377Z" hostname="DESKTOP-V649BGN" time="0.137">
+  <properties/>
+  <testcase name="TC-STL-04 (a): 정산월 마지막 순간에는 SETTLEMENT_PERIOD_NOT_CLOSED" classname="com.testability.lab.billing.FeeCalculatorTest$SettlementPeriodCases" time="0.007"/>
+  <testcase name="2026-08" classname="com.testability.lab.billing.FeeCalculatorTest$SettlementPeriodCases" time="0.011"/>
+  <testcase name="2026-09" classname="com.testability.lab.billing.FeeCalculatorTest$SettlementPeriodCases" time="0.002"/>
+  <testcase name="TC-STL-04 (b): 다음 달 첫 순간부터 정산할 수 있다" classname="com.testability.lab.billing.FeeCalculatorTest$SettlementPeriodCases" time="0.009"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

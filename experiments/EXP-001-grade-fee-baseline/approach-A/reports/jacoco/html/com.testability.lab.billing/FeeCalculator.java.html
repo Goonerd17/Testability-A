@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FeeCalculator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">testability-lab</a> &gt; <a href="index.source.html" class="el_package">com.testability.lab.billing</a> &gt; <span class="el_source">FeeCalculator.java</span></div><h1>FeeCalculator.java</h1><pre class="source lang-java linenums">package com.testability.lab.billing;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.Clock;
+import java.time.Instant;
+import java.time.YearMonth;
+import java.time.ZoneId;
+import java.util.List;
+import java.util.Objects;
+
+/**
+ * 한 회원의 결제 목록으로 정산월의 등급과 수수료를 계산한다.
+ *
+ * &lt;p&gt;전달받은 결제 목록은 모두 같은 회원의 것이라고 가정한다.
+ */
+public class FeeCalculator {
+
+<span class="fc" id="L19">    static final ZoneId ZONE = ZoneId.of(&quot;Asia/Seoul&quot;);</span>
+    private static final int PERFORMANCE_MONTHS = 12;
+<span class="fc" id="L21">    private static final BigDecimal BASIS_POINT_DIVISOR = BigDecimal.valueOf(10_000);</span>
+
+    private final Clock clock;
+
+<span class="fc" id="L25">    public FeeCalculator(Clock clock) {</span>
+<span class="fc" id="L26">        this.clock = Objects.requireNonNull(clock, &quot;clock&quot;);</span>
+<span class="fc" id="L27">    }</span>
+
+    /**
+     * 정산월의 등급, 수수료 기준액, 수수료를 계산한다.
+     * 정산월이 아직 끝나지 않았으면 거부한다 (BR-STL-002).
+     */
+    public FeeResult calculate(List&lt;Payment&gt; payments, YearMonth settlementMonth) {
+<span class="fc" id="L34">        Objects.requireNonNull(payments, &quot;payments&quot;);</span>
+<span class="fc" id="L35">        Objects.requireNonNull(settlementMonth, &quot;settlementMonth&quot;);</span>
+
+<span class="fc" id="L37">        Instant now = clock.instant();</span>
+<span class="fc bfc" id="L38" title="All 2 branches covered.">        if (now.isBefore(startOf(settlementMonth.plusMonths(1)))) {</span>
+<span class="fc" id="L39">            throw new IllegalStateException(&quot;SETTLEMENT_PERIOD_NOT_CLOSED: &quot; + settlementMonth);</span>
+        }
+
+<span class="fc" id="L42">        long gradeBasisAmount = cumulativeUsage(payments, settlementMonth);</span>
+<span class="fc" id="L43">        Grade grade = Grade.of(gradeBasisAmount);</span>
+<span class="fc" id="L44">        long feeBaseAmount = monthlyUsage(payments, settlementMonth);</span>
+<span class="fc" id="L45">        long fee = calculateFee(feeBaseAmount, grade);</span>
+
+<span class="fc" id="L47">        return new FeeResult(</span>
+                settlementMonth,
+<span class="fc" id="L49">                settlementMonth.minusMonths(PERFORMANCE_MONTHS),</span>
+<span class="fc" id="L50">                settlementMonth.minusMonths(1),</span>
+                gradeBasisAmount,
+                grade,
+                feeBaseAmount,
+<span class="fc" id="L54">                grade.rateBasisPoints(),</span>
+                fee
+        );
+    }
+
+    /**
+     * 정산월 직전 12개 완료 월의 누적 사용금액 (BR-PRF-002, BR-PRF-003).
+     * 정산월 자체의 거래는 포함하지 않는다.
+     */
+    public long cumulativeUsage(List&lt;Payment&gt; payments, YearMonth settlementMonth) {
+<span class="fc" id="L64">        YearMonth from = settlementMonth.minusMonths(PERFORMANCE_MONTHS);</span>
+<span class="fc" id="L65">        YearMonth to = settlementMonth.minusMonths(1);</span>
+
+<span class="fc" id="L67">        long sum = 0L;</span>
+<span class="fc bfc" id="L68" title="All 2 branches covered.">        for (Payment payment : payments) {</span>
+<span class="fc" id="L69">            YearMonth month = attributionMonth(payment);</span>
+<span class="fc bfc" id="L70" title="All 4 branches covered.">            if (!month.isBefore(from) &amp;&amp; !month.isAfter(to)) {</span>
+<span class="fc" id="L71">                sum = Math.addExact(sum, payment.amount());</span>
+            }
+<span class="fc" id="L73">        }</span>
+<span class="fc" id="L74">        return sum;</span>
+    }
+
+    /**
+     * 정산월 자체의 사용금액. 수수료 기준액이 된다 (BR-FEE-001).
+     */
+    public long monthlyUsage(List&lt;Payment&gt; payments, YearMonth month) {
+<span class="fc" id="L81">        long sum = 0L;</span>
+<span class="fc bfc" id="L82" title="All 2 branches covered.">        for (Payment payment : payments) {</span>
+<span class="fc bfc" id="L83" title="All 2 branches covered.">            if (attributionMonth(payment).equals(month)) {</span>
+<span class="fc" id="L84">                sum = Math.addExact(sum, payment.amount());</span>
+            }
+<span class="fc" id="L86">        }</span>
+<span class="fc" id="L87">        return sum;</span>
+    }
+
+    /**
+     * 수수료 = 기준액 × 요율, 원 단위 HALF_UP 반올림을 월 합계에 한 번만 적용한다 (BR-FEE-002, BR-FEE-003).
+     */
+    public long calculateFee(long feeBaseAmount, Grade grade) {
+<span class="fc bfc" id="L94" title="All 2 branches covered.">        if (feeBaseAmount &lt; 0) {</span>
+<span class="fc" id="L95">            throw new IllegalArgumentException(&quot;수수료 기준액은 음수일 수 없다: &quot; + feeBaseAmount);</span>
+        }
+<span class="fc" id="L97">        return BigDecimal.valueOf(feeBaseAmount)</span>
+<span class="fc" id="L98">                .multiply(BigDecimal.valueOf(grade.rateBasisPoints()))</span>
+<span class="fc" id="L99">                .divide(BASIS_POINT_DIVISOR, 0, RoundingMode.HALF_UP)</span>
+<span class="fc" id="L100">                .longValueExact();</span>
+    }
+
+    static YearMonth attributionMonth(Payment payment) {
+<span class="fc" id="L104">        return YearMonth.from(payment.occurredAt().atZone(ZONE));</span>
+    }
+
+    static Instant startOf(YearMonth month) {
+<span class="fc" id="L108">        return month.atDay(1).atStartOfDay(ZONE).toInstant();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.15.202606040825</span></div></body></html>

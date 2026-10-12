@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="기간 경계 (TC-PRD)" tests="11" skipped="0" failures="0" errors="0" timestamp="2026-10-12T13:55:06.623Z" hostname="DESKTOP-V649BGN" time="0.027">
+  <properties/>
+  <testcase name="TC-PRD-02: 산정 기간 직전(2025-06-30 23:59:59.999999999)의 결제는 제외" classname="com.testability.lab.billing.FeeCalculatorTest$PeriodCases" time="0.001"/>
+  <testcase name="매월 83334원 × 12 = 1000008 → SILVER" classname="com.testability.lab.billing.FeeCalculatorTest$PeriodCases" time="0.005"/>
+  <testcase name="매월 83333원 × 12 = 999996 → BASIC" classname="com.testability.lab.billing.FeeCalculatorTest$PeriodCases" time="0.002"/>
+  <testcase name="TC-PRD-04: 당월 첫 순간(2026-07-01 00:00)의 결제는 등급에서 제외되고 수수료 기준액에 포함" classname="com.testability.lab.billing.FeeCalculatorTest$PeriodCases" time="0.001"/>
+  <testcase name="TC-PRD-01: 산정 기간 첫 순간(2025-07-01 00:00)의 결제는 포함" classname="com.testability.lab.billing.FeeCalculatorTest$PeriodCases" time="0.0"/>
+  <testcase name="TC-PRD-03: 산정 기간 마지막 순간(2026-06-30 23:59:59.999999999)의 결제는 포함" classname="com.testability.lab.billing.FeeCalculatorTest$PeriodCases" time="0.001"/>
+  <testcase name="TC-PRD-05: 13개월 전과 당월 결제를 섞어도 직전 12개월만 등급에 반영" classname="com.testability.lab.billing.FeeCalculatorTest$PeriodCases" time="0.002"/>
+  <testcase name="TC-PRD-06: UTC로 표현된 시각도 Asia/Seoul 기준으로 귀속월을 판정" classname="com.testability.lab.billing.FeeCalculatorTest$PeriodCases" time="0.002"/>
+  <testcase name="TC-PRD-09: 윤년 2월 29일 마지막 순간은 2월, 3월 1일 0시는 3월" classname="com.testability.lab.billing.FeeCalculatorTest$PeriodCases" time="0.0"/>
+  <testcase name="TC-PRD-10 / TC-STL-01 일부: 결과에 산정 기간과 모든 계산 항목이 기록된다" classname="com.testability.lab.billing.FeeCalculatorTest$PeriodCases" time="0.001"/>
+  <testcase name="TC-PRD-07: 연도 경계 — 정산월 2026-01의 산정 기간은 2025-01 ~ 2025-12" classname="com.testability.lab.billing.FeeCalculatorTest$PeriodCases" time="0.002"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

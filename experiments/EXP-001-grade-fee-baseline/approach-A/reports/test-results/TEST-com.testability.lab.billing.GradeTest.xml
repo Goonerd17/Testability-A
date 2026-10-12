@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.testability.lab.billing.GradeTest" tests="15" skipped="0" failures="0" errors="0" timestamp="2026-10-12T13:55:06.677Z" hostname="DESKTOP-V649BGN" time="0.025">
+  <properties/>
+  <testcase name="BR-GRD-001: 음수 등급 실적은 등급 구간에 없으므로 오류다 (TEST_CASE_MATRIX 1.1)" classname="com.testability.lab.billing.GradeTest" time="0.001"/>
+  <testcase name="BASIC → 300bp" classname="com.testability.lab.billing.GradeTest" time="0.002"/>
+  <testcase name="SILVER → 200bp" classname="com.testability.lab.billing.GradeTest" time="0.001"/>
+  <testcase name="GOLD → 100bp" classname="com.testability.lab.billing.GradeTest" time="0.0"/>
+  <testcase name="VIP → 50bp" classname="com.testability.lab.billing.GradeTest" time="0.001"/>
+  <testcase name="GB 0 → BASIC" classname="com.testability.lab.billing.GradeTest" time="0.002"/>
+  <testcase name="GB 999999 → BASIC" classname="com.testability.lab.billing.GradeTest" time="0.0"/>
+  <testcase name="GB 1000000 → SILVER" classname="com.testability.lab.billing.GradeTest" time="0.0"/>
+  <testcase name="GB 4999999 → SILVER" classname="com.testability.lab.billing.GradeTest" time="0.0"/>
+  <testcase name="GB 5000000 → GOLD" classname="com.testability.lab.billing.GradeTest" time="0.001"/>
+  <testcase name="GB 9999999 → GOLD" classname="com.testability.lab.billing.GradeTest" time="0.001"/>
+  <testcase name="GB 10000000 → VIP" classname="com.testability.lab.billing.GradeTest" time="0.001"/>
+  <testcase name="GB 2147483647 → VIP" classname="com.testability.lab.billing.GradeTest" time="0.001"/>
+  <testcase name="GB 2147483648 → VIP" classname="com.testability.lab.billing.GradeTest" time="0.0"/>
+  <testcase name="GB 3000000000 → VIP" classname="com.testability.lab.billing.GradeTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

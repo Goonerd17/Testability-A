@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="결정성 (TC-TIM-07)" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-10-12T13:55:06.170Z" hostname="DESKTOP-V649BGN" time="0.2">
+  <properties/>
+  <testcase name="TC-TIM-07: 같은 데이터와 같은 Clock이면 서로 다른 인스턴스도 같은 결과" classname="com.testability.lab.billing.FeeCalculatorTest$DeterminismCases" time="0.2"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

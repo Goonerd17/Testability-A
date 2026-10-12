@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Grade.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">testability-lab</a> &gt; <a href="index.source.html" class="el_package">com.testability.lab.billing</a> &gt; <span class="el_source">Grade.java</span></div><h1>Grade.java</h1><pre class="source lang-java linenums">package com.testability.lab.billing;
+
+/**
+ * 회원 등급과 등급별 수수료율 (BR-GRD-001).
+ * 수수료율은 부동소수점 오차를 피하기 위해 베이시스 포인트(1bp = 0.01%)로 보관한다.
+ */
+<span class="fc" id="L7">public enum Grade {</span>
+
+<span class="fc" id="L9">    BASIC(0L, 300),</span>
+<span class="fc" id="L10">    SILVER(1_000_000L, 200),</span>
+<span class="fc" id="L11">    GOLD(5_000_000L, 100),</span>
+<span class="fc" id="L12">    VIP(10_000_000L, 50);</span>
+
+    private final long minimumAmount;
+    private final int rateBasisPoints;
+
+<span class="fc" id="L17">    Grade(long minimumAmount, int rateBasisPoints) {</span>
+<span class="fc" id="L18">        this.minimumAmount = minimumAmount;</span>
+<span class="fc" id="L19">        this.rateBasisPoints = rateBasisPoints;</span>
+<span class="fc" id="L20">    }</span>
+
+    public long minimumAmount() {
+<span class="nc" id="L23">        return minimumAmount;</span>
+    }
+
+    public int rateBasisPoints() {
+<span class="fc" id="L27">        return rateBasisPoints;</span>
+    }
+
+    /**
+     * 등급 실적으로 등급을 결정한다. 하한 이상이면 해당 등급이다 (BR-GRD-001).
+     */
+    public static Grade of(long gradeBasisAmount) {
+<span class="fc bfc" id="L34" title="All 2 branches covered.">        if (gradeBasisAmount &lt; 0) {</span>
+<span class="fc" id="L35">            throw new IllegalArgumentException(&quot;등급 실적은 음수일 수 없다: &quot; + gradeBasisAmount);</span>
+        }
+<span class="fc bfc" id="L37" title="All 2 branches covered.">        if (gradeBasisAmount &gt;= VIP.minimumAmount) {</span>
+<span class="fc" id="L38">            return VIP;</span>
+        }
+<span class="fc bfc" id="L40" title="All 2 branches covered.">        if (gradeBasisAmount &gt;= GOLD.minimumAmount) {</span>
+<span class="fc" id="L41">            return GOLD;</span>
+        }
+<span class="fc bfc" id="L43" title="All 2 branches covered.">        if (gradeBasisAmount &gt;= SILVER.minimumAmount) {</span>
+<span class="fc" id="L44">            return SILVER;</span>
+        }
+<span class="fc" id="L46">        return BASIC;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.15.202606040825</span></div></body></html>
