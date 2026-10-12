@@ -31,3 +31,19 @@
 | PMD 위반 | 미측정 | — | PMD 미도입 |
 | ArchUnit | 미측정 | — | ArchUnit 미도입 |
 | 성능 | 미측정 | — | k6 미설치 |
+
+---
+
+## EXP-001 실험 A — Claude 단독 테스트 (2026-10-12, 브랜치 `exp-001-a`)
+
+| 항목 | 값 | 측정 명령어 | 커밋 |
+|------|----|-------------|------|
+| 테스트 메서드 수 | 30 (실행 65건) | 소스 집계 / `build/test-results` | `eeac75d` |
+| 테스트 결과 (성공/실패/스킵) | 65 / 0 / 0 | `./gradlew clean test` | `eeac75d` |
+| Line Coverage (billing 패키지) | 66/67 = 98.5% | `jacocoTestReport` (JaCoCo 0.8.15) | `eeac75d` |
+| Branch Coverage (billing 패키지) | 26/26 = 100% | 같음 | `eeac75d` |
+| Line / Branch (프로젝트 전체) | 66/70 = 94.3% / 26/26 = 100% | 같음 | `eeac75d` |
+| Mutation Score | 미측정 | — | — |
+| 발견한 버그 | 0 | — | — |
+
+원본 리포트: `experiments/EXP-001-grade-fee-baseline/approach-A/reports/`, 상세: `approach-A/result.md`

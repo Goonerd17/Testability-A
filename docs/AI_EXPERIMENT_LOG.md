@@ -162,3 +162,33 @@
 - OPEN-01, 03, 04, 15는 이번 실험의 임시 전제로만 사용. 승인 상태는 그대로 "승인 대기"
 - 이번 Phase의 Clock 역할 결정은 `DECISIONS.md`에 추가하지 않았다 (Phase 1 문서 수정 금지 지시). EXPERIMENT_SCOPE §5와 이 로그에만 기록
 - Jev가 무엇이고 어떻게 실행하는지는 아직 확인하지 않음 → 방식 B Phase 전에 필요
+
+---
+
+## [2026-10-12] Phase 3 / EXP-001-A — Claude 단독 테스트
+
+- 수행 주체: AI(Claude Opus 5.5, Claude Code CLI)
+- 브랜치: `main`(c4dc2b7)에서 `exp-001-a` 생성. `main`은 변경하지 않음
+
+### 실행 명령어와 결과
+
+| 명령어 | 결과 |
+|--------|------|
+| `git switch -c exp-001-a` | 브랜치 생성 |
+| (실수) 같은 셸 명령에 불필요한 `python -` 호출을 넣어 명령이 멈춤 | 300초 타임아웃 후 백그라운드 작업 중지. `build.gradle`은 바뀌지 않은 상태였음. 이후 Edit 도구로 다시 작성 |
+| `curl .../org.jacoco.agent/maven-metadata.xml` | 최신 0.8.15 |
+| `./gradlew build` (JaCoCo 추가 후) | `BUILD SUCCESSFUL`, `jacocoTestReport SKIPPED` (테스트 없음) |
+| `git commit` build.gradle | `6be3c5c build: JaCoCo 0.8.15 커버리지 측정 설정` (실험 B에 cherry-pick 가능하도록 분리) |
+| `git commit` approach-A/prompt.md | `05286a3` |
+| `./gradlew clean test` | `BUILD SUCCESSFUL in 10s`, 65건 성공 / 0 실패 |
+| `git commit` 테스트 3개 파일 | `eeac75d`, 태그 `exp-001-a-tests` |
+| `git diff exp-001-ai-original --stat -- src/main` | 출력 없음 (비즈니스 코드 무변경 확인) |
+
+### 결과 요약
+- 테스트 메서드 30개 / 실행 65건, 전부 성공. 발견한 버그 없음
+- JaCoCo billing 패키지: Line 66/67 (98.5%), Branch 26/26 (100%). 미커버: `Grade.minimumAmount()`
+- 상세: `experiments/EXP-001-grade-fee-baseline/approach-A/result.md`
+
+### 수정 이력
+- 비즈니스 코드: 없음
+- 테스트: 최초 작성 후 수정 없음 (첫 실행에서 전부 통과)

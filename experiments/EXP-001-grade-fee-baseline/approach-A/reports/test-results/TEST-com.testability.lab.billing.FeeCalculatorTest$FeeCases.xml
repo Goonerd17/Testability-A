@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="수수료·반올림 (TC-FEE)" tests="18" skipped="0" failures="0" errors="0" timestamp="2026-10-12T13:55:06.525Z" hostname="DESKTOP-V649BGN" time="0.095">
+  <properties/>
+  <testcase name="BR-FEE-005, BR-PRF-005: 음수 수수료 기준액은 0으로 보정하지 않고 오류" classname="com.testability.lab.billing.FeeCalculatorTest$FeeCases" time="0.011"/>
+  <testcase name="TC-FEE-12: 당월 거래가 없으면 VIP라도 수수료 0원" classname="com.testability.lab.billing.FeeCalculatorTest$FeeCases" time="0.002"/>
+  <testcase name="TC-FEE-13: VIP 100원 × 3건은 월 합계 300원에 한 번 반올림해 2원 (거래별이면 3원)" classname="com.testability.lab.billing.FeeCalculatorTest$FeeCases" time="0.003"/>
+  <testcase name="등급 준비 0원, 당월 16원 → BASIC, 수수료 0원" classname="com.testability.lab.billing.FeeCalculatorTest$FeeCases" time="0.025"/>
+  <testcase name="등급 준비 0원, 당월 17원 → BASIC, 수수료 1원" classname="com.testability.lab.billing.FeeCalculatorTest$FeeCases" time="0.002"/>
+  <testcase name="등급 준비 0원, 당월 50원 → BASIC, 수수료 2원" classname="com.testability.lab.billing.FeeCalculatorTest$FeeCases" time="0.003"/>
+  <testcase name="등급 준비 1000000원, 당월 24원 → SILVER, 수수료 0원" classname="com.testability.lab.billing.FeeCalculatorTest$FeeCases" time="0.002"/>
+  <testcase name="등급 준비 1000000원, 당월 25원 → SILVER, 수수료 1원" classname="com.testability.lab.billing.FeeCalculatorTest$FeeCases" time="0.002"/>
+  <testcase name="등급 준비 5000000원, 당월 49원 → GOLD, 수수료 0원" classname="com.testability.lab.billing.FeeCalculatorTest$FeeCases" time="0.002"/>
+  <testcase name="등급 준비 5000000원, 당월 50원 → GOLD, 수수료 1원" classname="com.testability.lab.billing.FeeCalculatorTest$FeeCases" time="0.003"/>
+  <testcase name="등급 준비 5000000원, 당월 250원 → GOLD, 수수료 3원" classname="com.testability.lab.billing.FeeCalculatorTest$FeeCases" time="0.001"/>
+  <testcase name="등급 준비 10000000원, 당월 899원 → VIP, 수수료 4원" classname="com.testability.lab.billing.FeeCalculatorTest$FeeCases" time="0.002"/>
+  <testcase name="등급 준비 10000000원, 당월 900원 → VIP, 수수료 5원" classname="com.testability.lab.billing.FeeCalculatorTest$FeeCases" time="0.002"/>
+  <testcase name="등급 준비 10000000원, 당월 999원 → VIP, 수수료 5원" classname="com.testability.lab.billing.FeeCalculatorTest$FeeCases" time="0.002"/>
+  <testcase name="등급 준비 0원, 당월 10000000원 → BASIC, 수수료 300000원" classname="com.testability.lab.billing.FeeCalculatorTest$FeeCases" time="0.002"/>
+  <testcase name="등급 준비 0원 → BASIC, 수수료 90000000원" classname="com.testability.lab.billing.FeeCalculatorTest$FeeCases" time="0.004"/>
+  <testcase name="등급 준비 10000000원 → VIP, 수수료 15000000원" classname="com.testability.lab.billing.FeeCalculatorTest$FeeCases" time="0.002"/>
+  <testcase name="TC-FEE-14: BASIC 17원 × 2건은 월 합계 34원에 한 번 반올림해 1원 (거래별이면 2원)" classname="com.testability.lab.billing.FeeCalculatorTest$FeeCases" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
